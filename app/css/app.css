@@ -1,30 +1,87 @@
 /* app css stylesheet */
-
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+.line {
+  stroke-width: 1.5px;
+  fill:"blue";
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #b7b7b7;
+  shape-rendering: crispEdges;
 }
 
-.menu:before {
-  content: "[";
+.browser text {
+  text-anchor: end;
 }
 
-.menu:after {
-  content: "]";
+/*************** MENU **************/
+
+.menuBar{
+  width: 100%;
+  height: 50px;
+  text-align: left;
 }
 
-.menu > li {
-  display: inline;
+.menuBar ul
+{
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  margin: auto;
 }
 
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
+.menuBar li
+{
+  display: inline-block;
+  background-color: #fff;
+  padding: 10px;
 }
 
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
+.menuBar li a{
+  color: #3297FD; 
+}
+
+.menuBar li a:link
+{
+  text-decoration: none;
+}
+
+.menuBar li.active{
+  background-color: #2D89E5;
+}
+
+.menuBar li.active a{
+  color: #fff;
+}
+
+.graphControl{
+  width: 100%;
+  height: 50px;
+  text-align: right;
+}
+
+.graphControl ul
+{
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  margin: auto;
+}
+
+.graphControl li
+{
+  display: inline-block;
+  background-color: #fff;
+  padding: 10px;
+  color: #3297FD;
+  cursor: pointer;
+}
+
+.graphControl li.active
+{
+  border: 1px solid #2D89E5;
+}
+
+.graphControl img{
+  vertical-align: middle; 
 }

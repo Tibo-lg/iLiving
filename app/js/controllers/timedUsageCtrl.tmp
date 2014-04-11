@@ -1,0 +1,80 @@
+/// <reference path='_all.ts' />
+
+module iLiving{
+
+  export interface iLivingScope extends ng.IScope{
+    graph: Graph;
+    color: D3.Scale.OrdinalScale;
+  }
+
+  export interface Graph{
+    width: number;
+    height: number;
+    data: TimeSerie;
+  }
+
+  export interface TimeSerie{
+    [name: string]: Array<number>;
+  }
+
+  export interface GraphElement{
+    points: Array<Coordinate>;
+    line: any;
+    color: string;
+  }
+
+  export class iLivingCtrl{
+
+    private scope: iLivingScope;
+
+    public constructor( $scope :iLivingScope, $window :Window ){
+      this.scope = $scope;
+
+      angular.element($window).bind("resize", () => {this.onResize($window); this.scope.$apply();});
+
+      this.scope.graph = { 'width': 0, 'height': 0, 'data' :
+	{
+	  'date': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+	  'Room1': [10, 23, 9, 45, 5, 9, 4, 13, 6, 35],
+	  'Room2': [13, 18, 6, 45, 6, 9, 2, 21, 2, 40],
+	  'Room3': [8, 26, 9, 10, 5, 12, 4, 13, 6, 3],
+	}};
+
+      this.scope.color= d3.scale.category20();
+
+      //this.scope.color.domain(this.scope.graph.elements.length);
+
+      this.onResize($window);
+
+    }
+
+    public onResize($window :Window)
+    {
+      this.scope.graph.width =  $window.innerWidth;
+      this.scope.graph.height = $window.innerHeight;
+
+      //var stack = d3.layout.stack()
+//	.values(function(d){ return d.points; });
+
+      var area = d3.svg.area()
+	.x(function(d) { return x(d.x); })
+	.y0(function(d) { return y(d.y0); })
+	.y1(function(d) { return y(d.y); });
+
+      var x = d3.time.scale().range([0, this.scope.graph.width]);
+      var y = d3.scale.linear().range([this.scope.graph.height, 0]);
+
+      x.domain(d3.extent(this.scope.graph.elements[0].points, function(d) {return d.x}));
+      y.domain([0, d3.max(this.scope.graph.elements[this.scope.graph.elements.length-1].points, function(d) {return d.y})]);
+
+      for( var i=0; i<this.scope.graph.elements.length; i++ )
+      {
+
+	this.scope.graph.elements[i].line = function(d){ return area(d); };
+      }
+    }
+
+  }
+
+}
+

@@ -1,0 +1,15 @@
+
+
+<div>
+  <div class="graphControl">
+    <ul>
+      <li ng-click="previousRange()" ><img src="img/leftArrow.svg"/></li>
+      <li ng-click="nextRange()"><img src="img/rightArrow.svg"/></li>
+      <li>Resolution:</li>
+      <li ng-class="resolutionClass( '1h' )" ng-click="setResolution( '1h' )" >1 Hour</li>
+      <li ng-class="resolutionClass( '1d' )" ng-click="setResolution( '1d' )">1 Day</li>
+      <li ng-class="resolutionClass( '3d' )" ng-click="setResolution( '3d' )">3 Days</li>
+    </ul>
+  </div>
+  <bar-graph devicesconsumption="devicesconsumption" width="width" height="height"></bar-graph>
+</div>

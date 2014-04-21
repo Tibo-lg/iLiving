@@ -1,0 +1,12 @@
+
+<div>
+  <div class="graphControl">
+    <ul>
+      <li>Resolution:</li>
+      <li ng-class="resolutionClass( '1h' )" ng-click="setResolution( '1h' )" >1 Hour</li>
+      <li ng-class="resolutionClass( '1d' )" ng-click="setResolution( '1d' )">1 Day</li>
+      <li ng-class="resolutionClass( '3d' )" ng-click="setResolution( '3d' )">3 Days</li>
+    </ul>
+  </div>
+  <stacked-area-graph timeserie="timeserie" width="width" height="height"></stacked-area-graph>
+</div>

@@ -30,27 +30,25 @@ module iLiving.controllers{
 
     private curTotalConsumption: Array<DeviceConsumption>;
 
-    public constructor( $scope :ApplianceUsageScope, $filter: ng.IFilterService ){
+    private filter: ng.IFilterService;
+
+    static $inject = ['$scope', '$filter', 'dataFactory'];
+
+    public constructor( $scope :ApplianceUsageScope, $filter: ng.IFilterService, dataFactory ){
       this.scope = $scope;
+      this.filter = $filter;
 
       this.scope.height = $scope.$parent.height;
       this.scope.width  = $scope.$parent.width;
 
-      this.totalOneHour = [
-      { 'name': "Fridge", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven", 'consumption': 2.4, 'cost': 5.60 },
-      { 'name': "Fridge2", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump2", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven2", 'consumption': 2.4, 'cost': 5.60 },
-      { 'name': "Fridge3", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump3", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven3", 'consumption': 2.4, 'cost': 5.60 },
-      { 'name': "Fridge4", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump4", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven4", 'consumption': 2.4, 'cost': 5.60 },
-	];
+      dataFactory.getAppOneHour().success(
+	  (result) => {this.init(result);}
+	  );
+      
+    }
 
+    private init(result){
+      this.totalOneHour = result; 
       this.totalOneDay = [
       { 'name': "Fridge", 'consumption': 4.2, 'cost': 8.56 },
       { 'name': "Heat Pump", 'consumption': 7.2, 'cost': 11.46 },
@@ -64,7 +62,7 @@ module iLiving.controllers{
       { 'name': "Fridge4", 'consumption': 4.2, 'cost': 8.56 },
       { 'name': "Heat Pump4", 'consumption': 7.2, 'cost': 11.46 },
       { 'name': "Oven4", 'consumption': 5.4, 'cost': 5.60 },
-	];
+      ];
 
       this.totalThreeDays = [
       { 'name': "Fridge", 'consumption': 4.2, 'cost': 8.56 },
@@ -79,10 +77,11 @@ module iLiving.controllers{
       { 'name': "Fridge4", 'consumption': 2.2, 'cost': 8.56 },
       { 'name': "Heat Pump4", 'consumption': 7.2, 'cost': 11.46 },
       { 'name': "Oven4", 'consumption': 2.4, 'cost': 5.60 },
-	];
-      this.totalOneHour = $filter('orderBy')(this.totalOneHour, '-consumption');
-      this.totalOneDay = $filter('orderBy')(this.totalOneDay, '-consumption');
-      this.totalThreeDays = $filter('orderBy')(this.totalThreeDays, '-consumption');
+      ];
+      console.debug(this.totalOneHour);
+      this.totalOneHour = this.filter('orderBy')(this.totalOneHour, '-consumption'); 
+      this.totalOneDay = this.filter('orderBy')(this.totalOneDay, '-consumption'); 
+      this.totalThreeDays = this.filter('orderBy')(this.totalThreeDays, '-consumption'); 
       this.appliancePerPage = Math.floor((this.scope.width - 150) / 150);
 
       this.nbRange = Math.ceil(this.totalOneHour.length/this.appliancePerPage); 
@@ -96,7 +95,6 @@ module iLiving.controllers{
       this.scope.setResolution = (resolution)=>{ return this.setResolution(resolution);};
 
       this.setCurRange();
-      
     }
 
     public previousRange(){
@@ -144,4 +142,4 @@ module iLiving.controllers{
 
 }
 
-iLiving.registerController('ApplianceUsageCtrl', ['$scope', '$filter']);
+iLiving.registerController('ApplianceUsageCtrl', ['$scope', '$filter', 'dataFactory']);

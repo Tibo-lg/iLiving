@@ -40,61 +40,45 @@ module iLiving.controllers{
 
       this.scope.height = $scope.$parent.height;
       this.scope.width  = $scope.$parent.width;
+      this.scope.previousRange = ()=>{this.previousRange()};
+      this.scope.nextRange = ()=>{this.nextRange()};
+      this.scope.resolutionClass = (resolution)=>{return this.resolutionClass(resolution);};
+      this.scope.setResolution = (resolution)=>{ return this.setResolution(resolution);};
 
-      dataFactory.getAppOneHour().success(
-	  (result) => {this.init(result);}
+      dataFactory.getAppUse("onehour").success(
+	  (result) => {this.initOneHour(result);}
+	  );
+      dataFactory.getAppUse("oneday").success(
+	  (result) => {this.initOneDay(result);}
+	  );
+      dataFactory.getAppUse().success(
+	  (result) => {this.initThreeDay(result);}
 	  );
       
     }
 
-    private init(result){
+    private initOneHour(result){
       this.totalOneHour = result; 
-      this.totalOneDay = [
-      { 'name': "Fridge", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven", 'consumption': 2.4, 'cost': 5.60 },
-      { 'name': "Fridge2", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump2", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven2", 'consumption': 5.4, 'cost': 5.60 },
-      { 'name': "Fridge3", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump3", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven3", 'consumption': 1.4, 'cost': 5.60 },
-      { 'name': "Fridge4", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump4", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven4", 'consumption': 5.4, 'cost': 5.60 },
-      ];
 
-      this.totalThreeDays = [
-      { 'name': "Fridge", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven", 'consumption': 2.0, 'cost': 5.60 },
-      { 'name': "Fridge2", 'consumption': 4.2, 'cost': 8.56 },
-      { 'name': "Heat Pump2", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven2", 'consumption': 2.4, 'cost': 5.60 },
-      { 'name': "Fridge3", 'consumption': 7.2, 'cost': 8.56 },
-      { 'name': "Heat Pump3", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven3", 'consumption': 2.4, 'cost': 5.60 },
-      { 'name': "Fridge4", 'consumption': 2.2, 'cost': 8.56 },
-      { 'name': "Heat Pump4", 'consumption': 7.2, 'cost': 11.46 },
-      { 'name': "Oven4", 'consumption': 2.4, 'cost': 5.60 },
-      ];
-      console.debug(this.totalOneHour);
+      //console.debug(this.totalOneHour);
       this.totalOneHour = this.filter('orderBy')(this.totalOneHour, '-consumption'); 
-      this.totalOneDay = this.filter('orderBy')(this.totalOneDay, '-consumption'); 
-      this.totalThreeDays = this.filter('orderBy')(this.totalThreeDays, '-consumption'); 
       this.appliancePerPage = Math.floor((this.scope.width - 150) / 150);
 
       this.nbRange = Math.ceil(this.totalOneHour.length/this.appliancePerPage); 
 
-      this.scope.previousRange = ()=>{this.previousRange()};
-      this.scope.nextRange = ()=>{this.nextRange()};
-
       this.curTotalConsumption = this.totalOneHour;
 
-      this.scope.resolutionClass = (resolution)=>{return this.resolutionClass(resolution);};
-      this.scope.setResolution = (resolution)=>{ return this.setResolution(resolution);};
-
       this.setCurRange();
+    }
+
+    private initOneDay(result){
+      this.totalOneDay = result;
+      this.totalOneDay = this.filter('orderBy')(this.totalOneDay, '-consumption'); 
+    }
+
+    private initThreeDay(result){
+      this.totalThreeDays = result;
+      this.totalThreeDays = this.filter('orderBy')(this.totalThreeDays, '-consumption'); 
     }
 
     public previousRange(){

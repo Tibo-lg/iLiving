@@ -1,13 +1,17 @@
 ﻿angular.module('iLiving')
 .factory('dataFactory', ['$http', function ($http) {
 
-  var urlBase = 'http://localhost:3000/apponehour';
+  var urlBase = '/apponehour';
 
   return {
-    getAppOneHour: function () {
+    getAppUse: function (time) {
+      var url = urlBase;
+      if(time != null){
+	url += "?time=" + time;
+      }
       return  $http({
 	method: 'GET',
-	      url: urlBase
+	      url: url
       });
     }
   }
